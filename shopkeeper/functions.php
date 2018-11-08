@@ -1249,3 +1249,49 @@ if ( !function_exists('shopkeeper_loop_columns_class')):
 		echo $shopkeeper_theme_options['mobile_columns'] == 1 ? 'small-up-1' : 'small-up-2'; ?> medium-up-<?php echo $products_per_column_medium; ?> large-up-<?php echo $products_per_column_large; ?> xlarge-up-<?php echo $products_per_column_xlarge; ?> xxlarge-up-<?php echo $products_per_column;
 	}
 endif;
+//Pare Add woocommerce custom tabs for refund and release fund
+/**
+ * Insert the new endpoint into the My Account menu.
+ *
+ * @param array $items
+ * @return array
+ */
+function refund_my_account_menu_items( $items ) {
+	// Remove the logout menu item.
+	$logout = $items['customer-logout'];
+	unset( $items['customer-logout'] );
+
+	// Insert your custom endpoint.
+	$items['refund-request'] = __( 'Refund Request', 'woocommerce' );
+
+	// Insert back the logout item.
+	$items['customer-logout'] = $logout;
+
+	return $items;
+}
+
+add_filter( 'woocommerce_account_menu_items', 'refund_my_account_menu_items' );
+
+/**
+ * Insert the new endpoint into the My Account menu.
+ *
+ * @param array $items
+ * @return array
+ */
+function release_fund_my_account_menu_items( $items ) {
+	// Remove the logout menu item.
+	unset( $items['downloads'] );
+	$logout = $items['customer-logout'];
+	unset( $items['customer-logout'] );
+
+	// Insert your custom endpoint.
+	$items['release-fund-request'] = __( 'Release Fund/Reject', 'woocommerce' );
+
+	// Insert back the logout item.
+	$items['customer-logout'] = $logout;
+
+	return $items;
+}
+
+add_filter( 'woocommerce_account_menu_items', 'release_fund_my_account_menu_items' );
+ 
